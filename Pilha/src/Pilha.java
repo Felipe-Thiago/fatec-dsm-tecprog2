@@ -13,8 +13,8 @@ class Pilha {
     Object[] pilha;
     int topo = 0;
     
-    public Pilha(){
-        pilha = new Object[10];
+    public Pilha(int tamanho){
+        pilha = new Object[tamanho];
     }
             
     void empilha(Object elemento) {
@@ -36,6 +36,13 @@ class Pilha {
     Object desempilha() {
         topo--;
         return pilha[topo];
+    }
+
+    boolean cheia() {
+        if (topo == 10)
+            return true;
+        else
+            return false;
     }
     
 }

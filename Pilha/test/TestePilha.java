@@ -7,6 +7,14 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestePilha {
+    public int tamanhoPilha = 10;
+    public Pilha p;
+    
+    //Método para inicializar a pilha
+    @Before
+    public void inicializarPilha(){
+        p = new Pilha(tamanhoPilha);
+    }
     
     //Método para empilhar um elemento na Pilha
     //A pilha irá trabalhar com Object
@@ -14,7 +22,7 @@ public class TestePilha {
     @Test
     public void empilharUmObjeto(){
     
-        Pilha p = new Pilha();
+        
         
         assertTrue(p.vazia());
         p.empilha("Elemento 1");
@@ -24,7 +32,7 @@ public class TestePilha {
     @Test
     public void empilharDoisObjetosDesempilhaUm(){
     
-        Pilha p = new Pilha();
+        
         
         assertTrue(p.vazia());
         p.empilha("Elemento 1");
@@ -35,5 +43,17 @@ public class TestePilha {
         assertFalse(p.vazia());
     }
     
+    @Test
+    public void empilharDezElementos(){
+    
+        
+        
+        assertTrue(p.vazia());
+        for(int i=0; i < 10; i++){
+            p.empilha("Elemento " + i);
+        }
+        assertFalse(p.vazia());
+        assertTrue(p.cheia());
+    }
     
 }
