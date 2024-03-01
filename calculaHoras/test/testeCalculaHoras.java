@@ -18,40 +18,61 @@ import calculahoras.*;
  * @author Alunos
  */
 public class testeCalculaHoras {
+    public CalculaHoras calc;
+    @Before
+    public void InicializarCalc(){
+        calc = new CalculaHoras();
+    }
     
-    CalculaHoras calc = new CalculaHoras();
     
       
-    //Método para calcular horas considerando 1 hora de almoço
+    //Método para calcular horas abaixo de 6 por dia
     @Test
-    public void calculaHorasTotais(){
-    int horas = calc.retornaHoras(8, 17);
+    public void calculaHorasNormais(){
+    double horas = calc.retornaHoras(13, 18);
+    assertEquals(5, horas, 0);
     
     
-        System.out.println("1. Você trabalhou por " + horas + " horas hoje");
+        System.out.println("1. Você será pago por " + horas + " horas hoje");
     }
 
-    //Método para calcular horas com a diferença entre dias
-    //Ex: trabalhou do dia 02 ao dia 05 das 05:00 às 14:00
+    //Método para calcular horas acima de 6
     @Test
-    public void calculaHorasEmDias(){
-        int horasTotais = calc.retornaHorasDias(5, 14, 2, 5);
+    public void calculaHorasComExtras(){
+        double horasTotais = calc.retornaHoras(8, 18);
+        assertEquals(11.5, horasTotais, 0);
         
-        System.out.println("2. Você trabalhou, ao todo, por " + horasTotais + " horas");
+        System.out.println("2. Você será pago, ao todo, por " + horasTotais + " horas");
         
     }
         
-    //Método para calcular horas considerando o dia da semana
-    //Ex: trabalhou das 8 às 17 do dia 1 ao 30 "como o horário de sábado"
-    @Test
-    public void calculaHorasEmDiasComDiaSemana(){
-        int horasTrabalhadas = calc.retornaHorasSemana(8, 17, 1, 30, "Sábado");
-        System.out.println("3. Você receberá por " + horasTrabalhadas + " horas neste mês");
-    }
-    
+
     //Método para calcular horas com adicional noturno
     @Test
-    public void calculaHorasEmDiasComDiaSemanaComNoturno(){
-        int horasTrabalhadas = 
+    public void calculaHorasComExtraMaiorQue18(){
+        double horasTrabalhadas = calc.retornaHoras(14, 19);
+        assertEquals(5.5, horasTrabalhadas, 0);
+        System.out.println("4. Você receberá por " + horasTrabalhadas + " horas");
+    }
+    
+    @Test
+    public void calculaHorasComExtraMenorQue8(){
+        double horasTrabalhadas = calc.retornaHoras(6, 13);
+        assertEquals(9.5, horasTrabalhadas, 0);
+        System.out.println("5.Você receberá por " + horasTrabalhadas + " horas");
+    }
+    
+    @Test
+    public void calculaHorasComNoturno(){
+        double horasTrabalhadas = calc.retornaHoras(0, 9);
+        assertEquals(17.5, horasTrabalhadas, 0);
+        System.out.println("7.Você receberá por " + horasTrabalhadas + " horas");
+    }
+    
+    @Test
+    public void calculaHorasEntreDias(){
+        double horasTrabalhadas = calc.retornaHoras(14, 2);
+        assertEquals(19.5, horasTrabalhadas, 0);
+        System.out.println("9. Você receberá por " + horasTrabalhadas + " horas");
     }
 }

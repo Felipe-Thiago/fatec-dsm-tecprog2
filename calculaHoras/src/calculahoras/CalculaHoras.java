@@ -6,131 +6,129 @@ package calculahoras;
  */
 public class CalculaHoras {
     //Dados
-    private int entrada = 0;
-    private int saida = 0;
+    private double entrada = 0;
+    private double saida = 0;
     
-    private int dataInicio = 0;
-    private int dataFim = 0;
+    private double horas = 0;
     
 
-    public int getEntrada() {
+    //getters e setters
+    public double getEntrada() {
         return entrada;
     }
 
-    public void setEntrada(int entrada) {
+    public void setEntrada(double entrada) {
         this.entrada = entrada;
     }
 
-    public int getSaida() {
+    public double getSaida() {
         return saida;
     }
 
-    public void setSaida(int saida) {
+    public void setSaida(double saida) {
         this.saida = saida;
     }
-
-    public int getDataInicio() {
-        return dataInicio;
+    
+    public double getHoras(){
+        return horas;
     }
-
-    public void setDataInicio(int dataInicio) {
-        this.dataInicio = dataInicio;
-    }
-
-    public int getDataFim() {
-        return dataFim;
-    }
-
-    public void setDataFim(int dataFim) {
-        this.dataFim = dataFim;
+    
+    public void setHoras(double horas){
+        this.horas = horas;
     }
     
     
     //Métodos
-    public int retornaHoras(int entrada, int saida){
-        int horas = saida - entrada - 1;
-        
-        return horas;
-        
-    }
-    
-    public int retornaHorasDias(int entrada, int saida, int dataInicio, int dataFim){
-        int horas = saida - entrada - 1;
-        int dias = dataFim - dataInicio + 1;
-        
-        int horasTotais = horas * dias;
-        
-        return horasTotais;
-    }
-    
-    
-    public int retornaHorasSemana(int entrada, int saida, int dataInicio, int dataFim, String diaSemana){
-        int horas = saida - entrada - 1;
-        int dias = dataFim - dataInicio + 1;
-        int horasTotais = horas * dias;
-        int total = 0;
-        
-        for(int i = dataInicio; i >= dataFim; i++){
-            switch(diaSemana){
-            case "Segunda":
-            case "Terça":
-            case "Quarta":
-            case "Quinta":
-            case "Sexta":
-                total = total + horas;
-                /////////////////////////////
-                
-            case "Sábado":
-            case "Domingo":
-                horasTotais = horasTotais + horasTotais/2;
-                return horasTotais;
-            default:
-                return horasTotais;
+    public double retornaHoras(double entrada, double saida){
+        horas = saida - entrada;
+        double extra;
+        double extraNot;
+        if(horas > 6){
+            horas = horas + 1.5;
         }
+        if(saida > 18 && saida < 22){
+            extra = (saida - 18) * 0.5;
+            horas = horas + extra;
+        }
+        if(entrada < 8 && entrada >= 6){
+            extra = (8 - entrada) * 0.5;
+            horas = horas + extra;
+        }
+        if(saida > 22){
+            extraNot = (saida - 22);
+            extra = ((saida - 18 - extraNot) * 0.5) + extraNot;
+            horas = horas + extra;    
+        }
+        if(entrada < 6){
+            extraNot = (6 - entrada);
+            
+            extra = ((8 - entrada - extraNot) * 0.5) + extraNot;
+            horas = horas + extra;
+        }
+        if(entrada >= 22){
+            if(saida < 6){
+                extraNot = (saida - entrada) + 24;
+                horas = horas + extraNot;
+            }
         }
         
-        switch(diaSemana){
-            case "Segunda":
-            case "Terça":
-            case "Quarta":
-            case "Quinta":
-            case "Sexta":
-                if (entrada < 8){
-                    int extra = horas + (8 - entrada)/2;
-                    horasTotais = horasTotais + extra;
-                }
-                if (saida > 18){
-                    int extra = horas + (saida - 18)/2;
-                    horasTotais = horasTotais + extra;
-                }
-                return horasTotais;
-                
-                
-            case "Sábado":
-            case "Domingo":
-                horasTotais = horasTotais + horasTotais/2;
-                return horasTotais;
-            default:
-                return horasTotais;
-        }
-        
-        
-    }
-    
-    public int retornaHorasNoturno(int entrada, int saida, int dataInicio, int dataFim){
-        int horas = saida - entrada - 1;
-        int dias = dataFim - dataInicio + 1;
-        
-        int horasTotais = horas * dias;
-        
-        if(entrada > saida){ //20 -> 04:00
+        if(saida < entrada){
             horas = horas + 24;
             if(saida < 6){
-                 
+                extraNot = (saida - 22) + 24;
+                if(entrada > 8 && entrada < 18){
+                    extra = (22 - 18) * 0.5;
+                    horas = (18 - entrada) + extra + extraNot;
+                            //das 18 às 22 + das 22 à saída
+                }
             }
-        } 
+            
+        }
+        
+        return horas;
+    }
+    
+    /*
+    public double retornaHorasSemana(double entrada, double saida, int dataInicio, int dataFim, String diaSemana){
+        horas = retornaHoras(entrada, saida);
+        double horasTotais = 0;
+        
+        for(int i = dataInicio; i <= dataFim; i++){
+            switch(diaSemana){
+            case "Segunda":
+                horasTotais = horasTotais + horas;
+                diaSemana = "Terça";
+                break;
+            case "Terça":
+                horasTotais = horasTotais + horas;
+                diaSemana = "Quarta";
+                break;
+            case "Quarta":
+                horasTotais = horasTotais + horas;
+                diaSemana = "Quinta";
+                break;
+            case "Quinta":
+                horasTotais = horasTotais + horas;
+                diaSemana = "Sexta";
+                break;
+            case "Sexta":
+                horasTotais = horasTotais + horas;
+                diaSemana = "Sábado";
+                break;            
+            case "Sábado":
+                horasTotais = horasTotais + horas * 1.5;
+                diaSemana = "Domingo";
+                break;
+            case "Domingo":
+                horasTotais = horasTotais + horas * 1.5;
+                diaSemana = "Segunda";
+                break;            
+        }
+    }
         
         return horasTotais;
     }
+    */
+    
     
 }
