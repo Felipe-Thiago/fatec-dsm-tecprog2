@@ -39,7 +39,7 @@ public class CalculaHoras {
     
     
     //Métodos
-    public double retornaHoras(double entrada, double saida){
+    /*public double retornaHoras(double entrada, double saida){
         horas = saida - entrada;
         double extra;
         double extraNot;
@@ -84,9 +84,82 @@ public class CalculaHoras {
             }
             
         }
+        //das 18 às 22 - 50%
+        //das 22 às 06 - 100%
+        //das 6 às 8 - 50%
+        //das 8 às 18 - 100%
+        
+        return horas;
+    }*/
+    public double retornaHoras(double entrada, double saida){
+        horas = saida - entrada;
+        double HT, HE, HN = 0;
+        
+        if(horas > 6){
+            horas = horas + 1.5;
+        }
+        
+        if(entrada < 6){
+            HN = 6 - entrada;
+            
+            if (saida >= 6 && saida < 8){
+                HE = saida - entrada - HN;
+            }
+            if (saida > 8 && saida < 18){
+                HE = 8 - entrada - HN;
+                HT = saida - entrada - HN - HE;
+            }
+            if (saida > 18 && saida < 22){
+                HE = (saida - 18) + (8 - entrada - HN);
+            }
+            if (saida > 22){
+                
+            }
+        }
+        if(entrada > 6 && entrada < 8){
+            if (saida > 6 && saida < 8){
+                
+            }
+            if (saida > 8 && saida < 18){
+                
+            }
+            if (saida > 18 && saida < 22){
+                
+            }
+            if (saida > 22){
+                
+            }
+        }
+        if(entrada > 8 && entrada < 18){
+            if (saida > 6 && saida < 8){
+                
+            }
+            if (saida > 8 && saida < 18){
+                
+            }
+            if (saida > 18 && saida < 22){
+                
+            }
+            if (saida > 22){
+                
+            }
+        }
+        if(entrada > 18 && entrada < 22){
+            
+        }
+        if(entrada > 22){
+            
+        }
+        
+        //das 6 às 8 - 50% - Hora Extra (HE)
+        //das 8 às 18 - 100% - Hora Trabalhada (HT)
+        //das 18 às 22 - 50% - Hora Extra (HE)
+        //das 22 às 06 - 100% - Hora Noturna (HN)        
         
         return horas;
     }
+    
+    
     
     /*
     public double retornaHorasSemana(double entrada, double saida, int dataInicio, int dataFim, String diaSemana){
