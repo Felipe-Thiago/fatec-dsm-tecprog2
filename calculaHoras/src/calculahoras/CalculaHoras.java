@@ -92,15 +92,14 @@ public class CalculaHoras {
         return horas;
     }*/
     public double retornaHoras(double entrada, double saida){
-        horas = saida - entrada;
-        double HT, HE, HN = 0;
-        
-        if(horas > 6){
-            horas = horas + 1.5;
-        }
-        
-        if(entrada < 6){
-            HN = 6 - entrada;
+        //horas = saida - entrada;
+        double HT = 0;
+        double HN = 0;
+        double HE = 0;
+
+            if(entrada < 6){
+                HN = 6 - entrada;
+            }
             
             if (saida >= 6 && saida < 8){
                 HE = saida - entrada - HN;
@@ -113,43 +112,16 @@ public class CalculaHoras {
                 HE = (saida - 18) + (8 - entrada - HN);
             }
             if (saida > 22){
-                
+                HE = (saida - 18) - (saida - 22);
+                HN = HN + (saida - 22) - HE;
+                HT = saida - entrada - HN - HE;
             }
-        }
-        if(entrada > 6 && entrada < 8){
-            if (saida > 6 && saida < 8){
-                
-            }
-            if (saida > 8 && saida < 18){
-                
-            }
-            if (saida > 18 && saida < 22){
-                
-            }
-            if (saida > 22){
-                
-            }
-        }
-        if(entrada > 8 && entrada < 18){
-            if (saida > 6 && saida < 8){
-                
-            }
-            if (saida > 8 && saida < 18){
-                
-            }
-            if (saida > 18 && saida < 22){
-                
-            }
-            if (saida > 22){
-                
-            }
-        }
-        if(entrada > 18 && entrada < 22){
+            horas = HE * 1.5 + HN * 2 + HT;
             
+            if(horas > 6){
+            horas = horas + 1.5;
         }
-        if(entrada > 22){
-            
-        }
+        
         
         //das 6 às 8 - 50% - Hora Extra (HE)
         //das 8 às 18 - 100% - Hora Trabalhada (HT)
@@ -159,7 +131,7 @@ public class CalculaHoras {
         return horas;
     }
     
-    
+  
     
     /*
     public double retornaHorasSemana(double entrada, double saida, int dataInicio, int dataFim, String diaSemana){

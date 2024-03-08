@@ -18,61 +18,35 @@ import calculahoras.*;
  * @author Alunos
  */
 public class testeCalculaHoras {
-    public CalculaHoras calc;
+    public CalculaHoras1 calc;
     @Before
     public void InicializarCalc(){
-        calc = new CalculaHoras();
+        calc = new CalculaHoras1();
     }
     
     
-      
-    //Método para calcular horas abaixo de 6 por dia
     @Test
-    public void calculaHorasNormais(){
-    double horas = calc.retornaHoras(13, 18);
-    assertEquals(5, horas, 0);
-    
-    
-        System.out.println("1. Você será pago por " + horas + " horas hoje");
+    public void calculaHTPeriodoNormal(){        
+        //Entra as 08:00 sai as 12:00 = 4 horas        
+        assertEquals(4, calc.retornaHoras(8,12), 0);
+        //Entra as 13:00 sai as 18:00 = 5 horas        
+        assertEquals(5, calc.retornaHoras(13,18), 0);
+        //Entra as 08:00 sai as 18:00 = 10 horas + 1,5 almoço = 11,5      
+        assertEquals(11.5, calc.retornaHoras(8,18), 0);
     }
-
-    //Método para calcular horas acima de 6
     @Test
-    public void calculaHorasComExtras(){
-        double horasTotais = calc.retornaHoras(8, 18);
-        assertEquals(11.5, horasTotais, 0);
-        
-        System.out.println("2. Você será pago, ao todo, por " + horasTotais + " horas");
-        
+    public void calculaHTPeridoExtra50(){
+        assertEquals(5.5, calc.retornaHoras(14,19), 0);
+        //Entra as 13:00 sai as 18:00 = 5 horas        
+        assertEquals(7.0, calc.retornaHoras(06,12), 0);
+        //Entra as 08:00 sai as 18:00 = 10 horas + 1,5 almoço = 11,5      
+        assertEquals(9.5, calc.retornaHoras(6,13), 0);        
     }
-        
-
-    //Método para calcular horas com adicional noturno
     @Test
-    public void calculaHorasComExtraMaiorQue18(){
-        double horasTrabalhadas = calc.retornaHoras(14, 19);
-        assertEquals(5.5, horasTrabalhadas, 0);
-        System.out.println("4. Você receberá por " + horasTrabalhadas + " horas");
-    }
-    
-    @Test
-    public void calculaHorasComExtraMenorQue8(){
-        double horasTrabalhadas = calc.retornaHoras(6, 13);
-        assertEquals(9.5, horasTrabalhadas, 0);
-        System.out.println("5.Você receberá por " + horasTrabalhadas + " horas");
-    }
-    
-    @Test
-    public void calculaHorasComNoturno(){
-        double horasTrabalhadas = calc.retornaHoras(0, 9);
-        assertEquals(17.5, horasTrabalhadas, 0);
-        System.out.println("7.Você receberá por " + horasTrabalhadas + " horas");
-    }
-    
-    @Test
-    public void calculaHorasEntreDias(){
-        double horasTrabalhadas = calc.retornaHoras(14, 2);
-        assertEquals(19.5, horasTrabalhadas, 0);
-        System.out.println("9. Você receberá por " + horasTrabalhadas + " horas");
+    public void calculaHTPeridoExtra100(){
+        assertEquals(9.0f, calc.retornaHoras(17.0f,23.0f), 0);
+        assertEquals(17.5f, calc.retornaHoras(0.0f,9.0f), 0);
+        assertEquals(8.0f, calc.retornaHoras(22.00f,02.00f), 0);  
+        assertEquals(19.5f, calc.retornaHoras(14.00f,02.00f), 0); 
     }
 }
