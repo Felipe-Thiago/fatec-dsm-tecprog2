@@ -13,10 +13,11 @@ public class ContaEstacionamento {
 
         private estacionamento.Veiculo veiculo;
         private long inicio, fim;
-        private CalculoValor calculo;
+        private CalculoValor calculo; // é um comportamento
 
         public ContaEstacionamento(long inicio, long fim, String veiculo) {
-            
+            //this(inicio, veiculo);
+            //this.fim = fim;
             
         }
 

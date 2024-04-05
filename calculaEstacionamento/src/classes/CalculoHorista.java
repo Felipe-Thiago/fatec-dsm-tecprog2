@@ -10,7 +10,7 @@ package classes;
  * @author Alunos
  */
 public class CalculoHorista implements CalculoValor {
-        public CalculoHorista(double i) { // i = valorHora
-            
+        public CalculoHorista(double valorHora) {
+            this.valorHora = valorHora;
         }
     }

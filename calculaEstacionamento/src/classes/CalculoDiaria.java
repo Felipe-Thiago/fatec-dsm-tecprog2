@@ -10,7 +10,7 @@ package classes;
  * @author Alunos
  */
 public class CalculoDiaria implements CalculoValor {
-        public CalculoDiaria(double i) { //i = valorDia
+        public CalculoDiaria(double valorDia) { 
             
         }
 
