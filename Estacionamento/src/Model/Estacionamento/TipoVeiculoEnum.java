@@ -5,9 +5,9 @@ import java.io.Serializable;
 
 public enum TipoVeiculoEnum implements Serializable{
     
-    MOTOCICLETA(1,2,20),
-    CARRO_PASSEIO(2,4,40),
-    CAMINHOES(4,8,80);
+    MOTOCICLETA(1,2,20), //QM = 4, UH = 2, VQH = 0.83
+    CARRO_PASSEIO(2,4,40), //QM = 8, UH = 4, VQH = 1.66
+    CAMINHOES(4,8,80); //QM = 16, UH = 8, VQH = 3.33
     
     public double quinzeMinutos, umaHora, vinteQuatroHoras;
     

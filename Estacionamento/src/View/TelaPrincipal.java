@@ -422,8 +422,8 @@ public class TelaPrincipal extends javax.swing.JFrame {
         
         MetricaCalculoEnum metricaSelecionada = MetricaCalculoEnum.valueOf(cboxMetricaCalculo.getSelectedItem().toString());
         
-        
-        controle.finalizarConta(cboxVeiculos.getSelectedItem().toString(), MetricaCalculoEnum.valueOf(cboxMetricaCalculo.getSelectedItem().toString()));
+        //txtbValorEstacionamento +=
+        controle.finalizarConta(cboxVeiculos.getSelectedItem().toString(), metricaSelecionada);
         }catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -444,10 +444,17 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_cboxVeiculosActionPerformed
 
     private void cboxMetricaCalculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxMetricaCalculoActionPerformed
-    
+        try{
+            
+            String metricaSelecionada = cboxMetricaCalculo.getSelectedItem().toString();
+            String placaSelecionada = cboxVeiculos.getSelectedItem().toString();
         /*Calcula o valor utilizando a metrica de calculo selecionada. */
-        
+        txtbValorEstacionamento.setText(controle.calculaValorEstacionamento2(placaSelecionada, MetricaCalculoEnum.valueOf(metricaSelecionada)));
         //verificar qual o menor valor entre os 3 tipos de calculo
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+        
     }//GEN-LAST:event_cboxMetricaCalculoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

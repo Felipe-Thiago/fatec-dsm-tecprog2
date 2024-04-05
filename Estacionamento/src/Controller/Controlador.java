@@ -45,17 +45,50 @@ public class Controlador {
         
     }
     
+    private ContaVeiculo getConta(String placaVeiculo){
+       ContaVeiculo conta = null;
+        for(int i = 0; i<listaVeiculos.size();i++){
+            if(listaVeiculos.get(i).getVeiculo().getPlaca() == placaVeiculo){
+                conta = (ContaVeiculo) listaVeiculos.get(i);
+            }
+        }
+        return conta;
+   }
+    
     public void finalizarConta(String placaVeiculo,MetricaCalculoEnum metrica) throws Exception{
-        ContaVeiculo conta = null;
-        //conta.getVeiculo().getTipo();
+        ContaVeiculo conta = getConta(placaVeiculo);
         
         //Finaliza a conta, utilizando a metrica de calculo recebida como paramentro.
         // Se a metrica for AUTOMATICO, o sistema deverá verificar a opção mais barata e utiliza-la
-        switch(conta.getVeiculo().getTipo()){
-            case MOTOCICLETA:
+        /*switch(metrica){
+            case AUTOMATICO:
+                if((conta.getVeiculo().getTipo().quinzeMinutos)*4 < conta.getVeiculo().getTipo().umaHora
+                        && (conta.getVeiculo().getTipo().quinzeMinutos)*4 < (conta.getVeiculo().getTipo().vinteQuatroHoras)/24)
+                {
+                    Calculo15Minutos calculo = null;
+                    valor_final = calculo.calcular(Permanencia, conta.getVeiculo());
+                } else if(conta.getVeiculo().getTipo().umaHora < conta.getVeiculo().getTipo().quinzeMinutos*4
+                        && (conta.getVeiculo().getTipo().umaHora) < conta.getVeiculo().getTipo().vinteQuatroHoras/24)
+                {
+                    CalculoHorista calculo = null;
+                    valor_final = calculo.calcular(Permanencia, conta.getVeiculo());
+                } else if(conta.getVeiculo().getTipo().vinteQuatroHoras/24 < conta.getVeiculo().getTipo().quinzeMinutos*4
+                        && conta.getVeiculo().getTipo().vinteQuatroHoras/24 < conta.getVeiculo().getTipo().umaHora)
+                {
+                    CalculoDiaria calculo = null;
+                    valor_final = calculo.calcular(Permanencia, conta.getVeiculo());
+                }
                 break;
-            
-        }
+                
+            case DIARIA:
+                break;
+                
+            case HORA:
+                break;
+                
+            case UM_QUARTO_HORA:
+                break;
+        }*/
         
         // Altera o status para fechado e salva o registro.
         //Se valor da conta for zero retorna um erro.
@@ -63,8 +96,31 @@ public class Controlador {
         //Se não for possivel registra no BD, salve um backup local da listaVeiculos;
         //Utilize o objeto DAO
        
+    }
+    public String calculaValorEstacionamento2(String placaVeiculo, MetricaCalculoEnum metrica){
+        return Double.toString(calculaValorEstacionamento(placaVeiculo, metrica));
+    }
+    public double calculaValorEstacionamento(String placaVeiculo, MetricaCalculoEnum metrica){
+        ContaVeiculo conta = getConta(placaVeiculo);
         
         
+        switch(metrica){
+            case AUTOMATICO:         
+                automatico(conta);
+                break;
+            case DIARIA:
+                conta.setCalculo(new CalculoDiaria());
+                break;
+
+            case HORA:
+                conta.setCalculo(new CalculoHorista());
+                break;
+            case UM_QUARTO_HORA:
+                conta.setCalculo(new Calculo15Minutos());
+                break;
+        }
+        double aux = conta.valorConta(Calendar.getInstance().getTimeInMillis());
+        return aux;
     }
     
     public String calculaPermanencia(String placaVeiculo){
@@ -85,6 +141,19 @@ public class Controlador {
             }
         }
         return Float.toString(Permanencia/(60*1000*60));
+    }
+
+    private double automatico(ContaVeiculo conta) {
+        long periodo = Calendar.getInstance().getTimeInMillis() - conta.getInicio();
+        if(periodo < 1){
+            return calculaValorEstacionamento(conta.getVeiculo().getPlaca(), MetricaCalculoEnum.UM_QUARTO_HORA);
+        } else if(periodo >= 1 && periodo < 12){
+            return calculaValorEstacionamento(conta.getVeiculo().getPlaca(), MetricaCalculoEnum.HORA);
+        } else{
+            return calculaValorEstacionamento(conta.getVeiculo().getPlaca(), MetricaCalculoEnum.DIARIA);
+        }
+        
+        
     }
     
     
