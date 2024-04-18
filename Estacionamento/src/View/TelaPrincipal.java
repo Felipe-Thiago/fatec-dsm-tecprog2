@@ -2,10 +2,15 @@
 package View;
 
 import Controller.*;
+import Model.DAO.PersistenciaDados;
 import Model.Estacionamento.MetricaCalculoEnum;
 import Model.Estacionamento.TipoVeiculoEnum;
+import java.io.File;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -28,10 +33,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
             //Carrega os tipos de veiculos no combox
             cBoxTipoVeiculo.addItem(tipo.toString());  
         
-            //Carrega o tipo de calcula no combox (1/4 hora, hora, diaria, automático)
-           
-        for(MetricaCalculoEnum metrica: MetricaCalculoEnum.values())
+        //Carrega o tipo de calcula no combox (1/4 hora, hora, diaria, automático)
+        
+        for(MetricaCalculoEnum metrica: MetricaCalculoEnum.values()){
             cboxMetricaCalculo.addItem(metrica.toString());
+        }
+            
             
     }
     private void relogio(){
@@ -353,6 +360,11 @@ public class TelaPrincipal extends javax.swing.JFrame {
         jMenu1.add(jMenuItem1);
 
         jMenuItem2.setText("Abrir");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         jMenu1.add(jMenuItem2);
 
         jMenuBar1.add(jMenu1);
@@ -419,11 +431,13 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void btoFinalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btoFinalizarActionPerformed
         try{
-        
+        //quando finalizar -> pegar o veículo compatível com a placa e mudar de aberto pra fechado
+        //verificar primeiro se todos os requisitos estão preenchidos
         MetricaCalculoEnum metricaSelecionada = MetricaCalculoEnum.valueOf(cboxMetricaCalculo.getSelectedItem().toString());
         
-        //txtbValorEstacionamento +=
+        
         controle.finalizarConta(cboxVeiculos.getSelectedItem().toString(), metricaSelecionada);
+        atualizaListaVeiculos();
         }catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -439,18 +453,20 @@ public class TelaPrincipal extends javax.swing.JFrame {
 
     private void cboxVeiculosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxVeiculosActionPerformed
          //JOptionPane.showMessageDialog(rootPane, "Adicione o código para permitir calcular o periodo de permanencia");
-         //txt.permanencia.settext(controle.calculaPermanencia(placa selecionada - pesquisa na lista, acha o item da placa, pega a data de inicio e faz menos a data atual))
          txtbPeriodoPermanencia.setText(controle.calculaPermanencia(cboxVeiculos.getSelectedItem().toString()));
+         txtbValorEstacionamento.setText(controle.calculaValorEstacionamento2(cboxVeiculos.getSelectedItem().toString(), MetricaCalculoEnum.valueOf(cboxMetricaCalculo.getSelectedItem().toString())));
     }//GEN-LAST:event_cboxVeiculosActionPerformed
 
     private void cboxMetricaCalculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cboxMetricaCalculoActionPerformed
         try{
+            if (cboxMetricaCalculo.getSelectedItem() != null && cboxVeiculos.getSelectedItem() != null){
+                String metricaSelecionada = cboxMetricaCalculo.getSelectedItem().toString();
+                String placaSelecionada = cboxVeiculos.getSelectedItem().toString();
+                /*Calcula o valor utilizando a metrica de calculo selecionada. */
+                txtbValorEstacionamento.setText(controle.calculaValorEstacionamento2(placaSelecionada, MetricaCalculoEnum.valueOf(metricaSelecionada)));
+                //verificar qual o menor valor entre os 3 tipos de calculo
+            }
             
-            String metricaSelecionada = cboxMetricaCalculo.getSelectedItem().toString();
-            String placaSelecionada = cboxVeiculos.getSelectedItem().toString();
-        /*Calcula o valor utilizando a metrica de calculo selecionada. */
-        txtbValorEstacionamento.setText(controle.calculaValorEstacionamento2(placaSelecionada, MetricaCalculoEnum.valueOf(metricaSelecionada)));
-        //verificar qual o menor valor entre os 3 tipos de calculo
         } catch(Exception e){
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -458,7 +474,12 @@ public class TelaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_cboxMetricaCalculoActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
+        try {
+            // TODO add your handling code here:
+            controle.SalvarDados();
+        } catch (Exception ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void txtbPeriodoPermanenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtbPeriodoPermanenciaActionPerformed
@@ -469,6 +490,21 @@ public class TelaPrincipal extends javax.swing.JFrame {
     private void cBoxTipoVeiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cBoxTipoVeiculoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cBoxTipoVeiculoActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        try{
+            String arquivo = File.separator;
+            JFileChooser fc = new JFileChooser(new File(arquivo));
+            fc.showOpenDialog(jPanel1);
+            File selArq= fc.getSelectedFile();            
+            controle.lerDados(selArq.toString());
+            atualizaListaVeiculos();
+            JOptionPane.showMessageDialog(rootPane, "Carregando lista de veículos");
+        } catch (Exception ex) {
+            Logger.getLogger(TelaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }   
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     
 

@@ -33,7 +33,7 @@ public class PersistenciaDados {
         s.writeObject(objeto);
         s.close();
     }
-    private Object lerBackup(String caminho) throws FileNotFoundException, IOException, ClassNotFoundException{        
+    public Object lerBackup(String caminho) throws FileNotFoundException, IOException, ClassNotFoundException{        
         FileInputStream inFile = new FileInputStream(caminho);
         ObjectInputStream s = new ObjectInputStream(inFile);
         Object objeto = s.readObject();
