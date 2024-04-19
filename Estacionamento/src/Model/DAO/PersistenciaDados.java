@@ -20,6 +20,7 @@ public class PersistenciaDados {
     public boolean criarNovoRegistro(ContaVeiculo elemento){
         //Realiza o acesso ao BD e cria um novo registro do BD retornando True;
         //Senão for possivel registrar do BD retorna False.
+        
         return false;
     }
     public boolean salvarBackupLocal(List<ContaVeiculo> listaRegistros)throws Exception{

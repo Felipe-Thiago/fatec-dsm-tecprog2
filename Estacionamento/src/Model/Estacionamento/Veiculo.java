@@ -26,6 +26,18 @@ public class Veiculo implements Serializable{
         return tipo;
     }
 
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setPlaca(String placa) {
+        this.placa = placa;
+    }
+
+    public void setTipo(TipoVeiculoEnum tipo) {
+        this.tipo = tipo;
+    }
+
     
     
 }

@@ -71,7 +71,7 @@ public class Controlador {
         if(conta.valorConta((long) calculaValorEstacionamento(placaVeiculo, metrica)) != 0){
             conta.setStatus(StatusConta.FECHADO);
             if(DAO.criarNovoRegistro(conta)){ //se for true interage com o BD
-               
+                
                 
                 //comunicar com banco de dados
                 
