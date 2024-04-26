@@ -54,6 +54,14 @@ public class ContaVeiculo implements Serializable{
     public long getFim() {
         return fim;
     }
+
+    public void setVeiculo(Veiculo veiculo) {
+        this.veiculo = veiculo;
+    }
+
+    public void setInicio(long inicio) {
+        this.inicio = inicio;
+    }
      
     
     

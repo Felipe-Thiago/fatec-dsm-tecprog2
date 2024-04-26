@@ -4,8 +4,9 @@
  */
 package Model.DAO;
 
-import Model.Estacionamento.Conta;
+
 import Model.Estacionamento.ContaVeiculo;
+import Model.Estacionamento.StatusConta;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -46,11 +47,11 @@ public class ContaDAO {
             ResultSet resultado = stmt.executeQuery();
             while (resultado.next()){
                 ContaVeiculo conta = new ContaVeiculo(conta.getInicio(), conta.getVeiculo()); //alterar aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
-                conta.setId(resultado.getInt("id"));
-                conta.setPlaca(resultado.getString("placa"));
-                conta.setInicio(resultado.getInt("inicio"));
-                conta.setFim(resultado.getInt("fim"));
-                conta.setStatus(resultado.getString("status"));
+                conta.setInicio(resultado.getInt((int) conta.getInicio()));
+                conta.getVeiculo().setPlaca(resultado.getString("placa"));
+                conta.setFim(resultado.getInt());
+                conta.setStatus(StatusConta.valueOf(resultado.getString("status")));
+                
                 
                 retorno.add(conta);
                 
@@ -62,15 +63,14 @@ public class ContaDAO {
         
     }
     
-    public boolean inserir(Conta conta){
-        String sql = "INSERT INTO conta(id, placa, inicio, fim, status) VALUES(?, ?, ?, ?, ?)";
+    public boolean inserir(ContaVeiculo conta){
+        String sql = "INSERT INTO conta(fim, status) VALUES(?, ?)";
         try{
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, conta.getId());
-            stmt.setString(2, conta.getPlaca());
-            stmt.setInt(3, conta.getInicio());
-            stmt.setInt(4, conta.getFim());
-            stmt.setString(5, conta.getStatus());
+            stmt.setInt(1, (int) conta.getFim());
+            stmt.setString(2, conta.getStatus().toString());
+            
+           
             stmt.execute();
             return true;
         } catch(SQLException ex){
@@ -79,14 +79,15 @@ public class ContaDAO {
         }
     }
     
-    public boolean alterar(Conta conta){
-        String sql = "UPDATE conta SET inicio=?, fim=?, status=? WHERE id=?";
+    public boolean alterar(ContaVeiculo conta){
+        String sql = "UPDATE conta SET fim=?, status=? WHERE placa=?";
         try{
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, conta.getInicio());
-            stmt.setInt(2, conta.getFim());
-            stmt.setString(3, conta.getStatus());
-            stmt.setString(4, conta.)
+            stmt.setInt(1, (int) conta.getInicio());
+            stmt.setString(2, conta.getStatus().toString());
+            stmt.setString(3, conta.getVeiculo().getPlaca().toString());
+            
+            stmt.setString(4, conta.getVeiculo().getPlaca());
             stmt.execute();
             return true;
         } catch(SQLException ex){
@@ -96,11 +97,11 @@ public class ContaDAO {
         
     }
     
-    public boolean remover(int id){
-        String sql = "DELETE FROM conta where id=?";
+    public boolean remover(String placa){
+        String sql = "DELETE FROM conta where placa=?";
         try{
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, id);
+            stmt.setString(1, placa);
             stmt.execute();
             return true;
         } catch(SQLException ex){

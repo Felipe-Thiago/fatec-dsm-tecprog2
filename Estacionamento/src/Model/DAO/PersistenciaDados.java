@@ -12,7 +12,7 @@ import java.util.List;
 
 public class PersistenciaDados {
     
-    String caminhoPadrao= "C:\\Backup_Estacionamento";
+    String caminhoPadrao= "C:\\Users\\Alunos\\Desktop\\";
     int countBackup=0;
     public PersistenciaDados() {
     }
@@ -20,6 +20,8 @@ public class PersistenciaDados {
     public boolean criarNovoRegistro(ContaVeiculo elemento){
         //Realiza o acesso ao BD e cria um novo registro do BD retornando True;
         //Senão for possivel registrar do BD retorna False.
+        
+        
         
         return false;
     }

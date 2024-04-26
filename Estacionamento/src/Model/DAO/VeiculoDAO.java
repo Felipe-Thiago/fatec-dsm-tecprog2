@@ -61,6 +61,15 @@ public class VeiculoDAO {
         
     }
     
+    public boolean bdConectado(){
+        if(connection == null){
+            return false;
+        } else{
+            return true;
+        }
+        
+    }
+    
     public boolean inserir(Veiculo veiculo){
         String sql = "INSERT INTO veiculo(placa, nome, tipo) VALUES(?, ?, ?)";
         try{

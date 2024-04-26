@@ -13,26 +13,38 @@ import java.util.Locale;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+
 public class Controlador {
     
     private List<ContaVeiculo> listaVeiculos;
     private Thread t0,t1;
     private PersistenciaDados DAO;
+    private VeiculoDAO veiculoDAO;
     
     public Controlador(){
         listaVeiculos=new ArrayList<ContaVeiculo>();  
         DAO=new PersistenciaDados();
+        veiculoDAO = new VeiculoDAO();
     }
     
     public void addContaVeiculo(String nome, String placa, TipoVeiculoEnum tipo)throws Exception{
-        listaVeiculos.add(new ContaVeiculo(Calendar.getInstance().getTimeInMillis()-(1000*60*60*2), new Veiculo(nome, placa, tipo)));
+        if(veiculoDAO.bdConectado()){
+            veiculoDAO.inserir(new Veiculo(nome, placa, tipo));
+        } else{
+            listaVeiculos.add(new ContaVeiculo(Calendar.getInstance().getTimeInMillis()-(1000*60*60*2), new Veiculo(nome, placa, tipo)));
+        }
+        
+        
+        
     }
     
     public String[][] listaVeiculosCadastrados() throws Exception{
         
+        
         String[][] aux=new String[listaVeiculos.size()][6];
         ContaVeiculo conta;
         Date dataAux;
+        
         for(int i=0;i<listaVeiculos.size();i++){
             conta=(ContaVeiculo) listaVeiculos.get(i);
             aux[i][0]=conta.getVeiculo().getNome();

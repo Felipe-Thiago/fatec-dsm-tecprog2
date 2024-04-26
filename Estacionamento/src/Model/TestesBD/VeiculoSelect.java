@@ -35,7 +35,7 @@ public class VeiculoSelect {
             veiculo.setPlaca(rs.getString("placa"));
             veiculo.setNome(rs.getString("nome"));
             veiculo.setTipo(TipoVeiculoEnum.valueOf(rs.getString("tipo")));
-            System.out.println(veiculo);
+            System.out.println("Placa: " + veiculo.getPlaca() + "; Nome: " + veiculo.getNome() + "; Tipo: " + veiculo.getTipo().toString());
         }
     }
 }

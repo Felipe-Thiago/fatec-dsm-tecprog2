@@ -4,26 +4,31 @@
  */
 package Model.TestesBD;
 
-import java.util.List;
+import Model.DAO.ContaDAO;
+import Model.Estacionamento.ContaVeiculo;
+
 import Model.DAO.VeiculoDAO;
 import Model.Estacionamento.TipoVeiculoEnum;
 import Model.Estacionamento.Veiculo;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  *
  * @author Alunos
  */
-public class MainVeiculoDAO {
+public class MainContaDAO {
     public static void main(String[] args) throws SQLException{
-        VeiculoDAO veiculoDAO = new VeiculoDAO();
-        List<Veiculo> lista;
-        veiculoDAO.alterar(new Veiculo("golzinhoo", "abc1234", TipoVeiculoEnum.CARRO_PASSEIO));
-                
-        lista= veiculoDAO.listar();
         
-        for(Veiculo vl: lista){
-            System.out.println(vl.getNome() + " " + vl.getPlaca() + " " + vl.getTipo().toString());
+        ContaDAO contaDAO = new ContaDAO();
+        List<ContaVeiculo> lista;
+        contaDAO.alterar(contaDAO.);
+        lista = contaDAO.listar();
+        
+        
+             
+        for(ContaVeiculo cl: lista){
+            System.out.println(cl.getInicio(), cl.getVeiculo());
         }
         
     }

@@ -36,7 +36,7 @@ public class VeiculoInsert {
             ps.setString(2, veiculo.getNome());
             ps.setString(3, veiculo.getTipo().toString());
             ps.execute();
-            System.out.println(veiculo);
+            System.out.println("Placa: " + veiculo.getPlaca() + "; Nome: " + veiculo.getNome() + "; Tipo: " + veiculo.getTipo().toString());
         }
     }
 }
